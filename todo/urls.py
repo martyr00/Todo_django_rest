@@ -1,12 +1,9 @@
-from tastypie.api import Api
-from django.urls import path, include
+from django.urls import path
+from .views import TodoCardAPIRetrieveUpdateDestroy, TodoCardAPIListCreate
 
-import todo
-from todo.models import TodoCardResource
-
-api = Api(api_name='v1')
-api.register(TodoCardResource())
+app_name = 'todo'
 
 urlpatterns = [
-    path('', include(api.urls), name='index')
+    path('todo/', TodoCardAPIListCreate.as_view()),
+    path('todo/<int:pk>/', TodoCardAPIRetrieveUpdateDestroy.as_view()),
 ]
