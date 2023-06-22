@@ -6,7 +6,7 @@ from .models import TodoCard
 from .permission import IsOwnerOrAdmin
 from .serializers import TodoCardSerializer
 from rest_framework import viewsets, generics
-
+from django.contrib.auth.models import User
 
 # class TodoCardViewSet(viewsets.ModelViewSet):
 #     queryset = TodoCard.objects.all()
@@ -28,6 +28,10 @@ class TodoCardAPIListCreate(generics.ListCreateAPIView):
 
     def get_queryset(self):
         query_set = super().get_queryset()
+        user_from_db = User.objects.get(username=self.request.user)
+
+        if user_from_db.is_superuser:
+            return query_set
         return query_set.filter(user=self.request.user)
 
 
